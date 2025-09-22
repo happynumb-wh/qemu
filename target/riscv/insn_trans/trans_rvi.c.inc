@@ -364,7 +364,9 @@ static bool gen_load_tl(DisasContext *ctx, arg_lb *a, MemOp memop)
 {
     TCGv dest = dest_gpr(ctx, a->rd);
     TCGv addr = get_address(ctx, a->rs1, a->imm);
-
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(pc_now, ctx, 0);
+    gen_helper_hmtt_load_check(tcg_env, pc_now, addr);
     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, memop);
     gen_set_gpr(ctx, a->rd, dest);
     return true;

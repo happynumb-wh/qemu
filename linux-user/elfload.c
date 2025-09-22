@@ -3286,6 +3286,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
 {
     g_autofree struct elf_phdr *phdr = NULL;
     abi_ulong load_addr, load_bias, loaddr, hiaddr, error, align;
+    int hmtt = 0;
     size_t reserve_size, align_size;
     int i, prot_exec;
     Error *err = NULL;
@@ -3369,6 +3370,10 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
     }
 
     load_addr = loaddr;
+    if (!strcmp(image_name, "<internal-vdso>")) {
+        load_addr += (0x800000000 + 0x2000);
+        hmtt = 1;
+    }    
 
     align = pow2ceil(align);
 
@@ -3430,7 +3435,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
 
     load_addr = target_mmap(load_addr, align_size, PROT_NONE,
                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
-                            (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
+                            ((ehdr->e_type == ET_EXEC || hmtt) ? MAP_FIXED_NOREPLACE : 0),
                             -1, 0);
     if (load_addr == -1) {
         goto exit_mmap;
