@@ -478,7 +478,9 @@ static bool gen_store_tl(DisasContext *ctx, arg_sb *a, MemOp memop)
     if (ctx->ztso) {
         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
     }
-
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(pc_now, ctx, 0);
+    gen_helper_hmtt_store_check(tcg_env, pc_now, addr);
     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, memop);
     return true;
 }

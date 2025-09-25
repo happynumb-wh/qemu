@@ -130,6 +130,8 @@ DEF_HELPER_4(csrw_i128, void, env, int, tl, tl)
 DEF_HELPER_6(csrrw_i128, tl, env, int, tl, tl, tl, tl)
 
 DEF_HELPER_3(hmtt_load_check, void, env, tl, tl)
+DEF_HELPER_3(hmtt_store_check, void, env, tl, tl)
+
 
 
 

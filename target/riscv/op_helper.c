@@ -27,6 +27,7 @@
 #include "exec/helper-proto.h"
 #include "exec/tlb-flags.h"
 #include "trace.h"
+#include "hmtt.h"
 
 /* Exceptions processing helpers */
 G_NORETURN void riscv_raise_exception(CPURISCVState *env,
@@ -275,11 +276,19 @@ void helper_hmtt_load_check(CPURISCVState *env, target_ulong pc, target_ulong ad
     if (!env->hmttcfg) {
         return;
     }
+    
+    hmtt_update_cacheline(env, addr, pc, 0);
+}
 
-    if ((addr)== 0x23f2740 || (addr & ~0x3f) == 0xa79236c0)
-    {
-        printf("hmtt load check addr=%lx pc=%lx\n", addr, pc);
+/* DASICS helpers */
+void helper_hmtt_store_check(CPURISCVState *env, target_ulong pc, target_ulong addr)
+{
+    // A switch 
+    if (!env->hmttcfg) {
+        return;
     }
+
+    hmtt_update_cacheline(env, addr, pc, 1);
 }
 
 
