@@ -1408,7 +1408,6 @@ static const TranslatorOps riscv_tr_ops = {
     .tb_stop            = riscv_tr_tb_stop,
 };
 
-// DEBUG
 RISCVCPU *hmtt_cpu;
 CPURISCVState *hmtt_env;
 
@@ -1418,6 +1417,7 @@ void riscv_translate_code(CPUState *cs, TranslationBlock *tb,
     DisasContext ctx;
     hmtt_cpu = RISCV_CPU(cs);
     hmtt_env = &hmtt_cpu->env;
+
     translator_loop(cs, tb, max_insns, pc, host_pc, &riscv_tr_ops, &ctx.base);
 }
 

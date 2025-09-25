@@ -267,14 +267,21 @@ void helper_cbo_inval(CPURISCVState *env, target_ulong address)
     /* We don't emulate the cache-hierarchy, so we're done. */
 }
 
+
 /* DASICS helpers */
 void helper_hmtt_load_check(CPURISCVState *env, target_ulong pc, target_ulong addr)
 {
-    if (addr == 0x8113adc0)
+    // A switch 
+    if (!env->hmttcfg) {
+        return;
+    }
+
+    if ((addr)== 0x23f2740 || (addr & ~0x3f) == 0xa79236c0)
     {
         printf("hmtt load check addr=%lx pc=%lx\n", addr, pc);
     }
 }
+
 
 #ifndef CONFIG_USER_ONLY
 

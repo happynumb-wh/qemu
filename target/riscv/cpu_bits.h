@@ -63,6 +63,9 @@
 #define CSR_VTYPE           0xc21
 #define CSR_VLENB           0xc22
 
+/* User hmtt cfg */
+#define CSR_HMTTCFG         0x088
+
 /* VCSR fields */
 #define VCSR_VXSAT_SHIFT    0
 #define VCSR_VXSAT          (0x1 << VCSR_VXSAT_SHIFT)

@@ -79,6 +79,12 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit)
 }
 #endif
 
+static RISCVException hmtt(CPURISCVState *env, int csrno)
+{
+    return RISCV_EXCP_NONE;
+}
+
+
 static RISCVException fs(CPURISCVState *env, int csrno)
 {
 #if !defined(CONFIG_USER_ONLY)
@@ -835,6 +841,20 @@ static RISCVException seed(CPURISCVState *env, int csrno)
 #else
     return RISCV_EXCP_NONE;
 #endif
+}
+
+static RISCVException read_hmttcfg(CPURISCVState *env, int csrno,
+                                 target_ulong *val)
+{
+    *val = env->hmttcfg;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException write_hmttcfg(CPURISCVState *env, int csrno,
+                                  target_ulong val, uintptr_t ra)
+{
+    env->hmttcfg = val;
+    return RISCV_EXCP_NONE;
 }
 
 /* zicfiss CSR_SSP read and write */
@@ -5825,6 +5845,8 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
     [CSR_CYCLEH]   = { "cycleh",   ctr32,  read_hpmcounterh },
     [CSR_INSTRETH] = { "instreth", ctr32,  read_hpmcounterh },
 
+    /* User Hmtt cfg */
+    [CSR_HMTTCFG] = { "hmttcfg", hmtt, read_hmttcfg, write_hmttcfg},
     /*
      * In privileged mode, the monitor will have to emulate TIME CSRs only if
      * rdtime callback is not provided by machine/platform emulation.

@@ -2513,6 +2513,7 @@ static const char *csr_name(int csrno)
     case 0x0c20: return "vl";
     case 0x0c21: return "vtype";
     case 0x0c22: return "vlenb";
+    case 0x0c33: return "hmttcfg";
     case 0x0c80: return "cycleh";
     case 0x0c81: return "timeh";
     case 0x0c82: return "instreth";

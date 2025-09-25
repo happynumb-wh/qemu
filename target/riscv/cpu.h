@@ -273,6 +273,10 @@ struct CPUArchState {
     uint64_t menvcfg;
     target_ulong senvcfg;
 
+
+    /* HMTT csr */
+    target_ulong hmttcfg;
+
 #ifndef CONFIG_USER_ONLY
     /* This contains QEMU specific information about the virt state. */
     bool virt_enabled;
@@ -372,6 +376,7 @@ struct CPUArchState {
     /* Upper 64-bits of 128-bit CSRs */
     uint64_t mscratchh;
     uint64_t sscratchh;
+
 
     /* Virtual CSRs */
     /*
