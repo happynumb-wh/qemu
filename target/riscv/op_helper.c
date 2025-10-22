@@ -273,22 +273,45 @@ void helper_cbo_inval(CPURISCVState *env, target_ulong address)
 void helper_hmtt_load_check(CPURISCVState *env, target_ulong pc, target_ulong addr)
 {
     // A switch 
-    if (!env->hmttcfg) {
+    int enable = ((env->hmttcfg & HMTT_VALID) != 0) && \
+                 (((env->hmttcfg & HMTT_MINH) == 0 && env->priv == PRV_M) || \
+                //   ((env->hmttcfg & HMTT_SINH) == 0 && env->priv == PRV_S) ||
+                  (env->priv == PRV_S && ((addr & 0x8000000000000000UL) == 0)) ||
+                    // env->priv == PRV_S ||
+                  ((env->hmttcfg & HMTT_UINH) == 0 && env->priv == PRV_U));
+
+    
+    if (!enable) {
         return;
     }
-    
-    hmtt_update_cacheline(env, addr, pc, 0);
+
+    if (env->priv == PRV_U) {
+        env->hmttloadinstrs += 1;
+    }
+    hmtt_update_memtrace(env, addr, pc, LOAD);
+
 }
 
 /* DASICS helpers */
 void helper_hmtt_store_check(CPURISCVState *env, target_ulong pc, target_ulong addr)
 {
     // A switch 
-    if (!env->hmttcfg) {
+    int enable = ((env->hmttcfg & HMTT_VALID) != 0) && \
+                 (((env->hmttcfg & HMTT_MINH) == 0 && env->priv == PRV_M) || \
+                //   ((env->hmttcfg & HMTT_SINH) == 0 && env->priv == PRV_S) ||
+                    (env->priv == PRV_S && ((addr & 0x8000000000000000UL) == 0)) ||
+                    // env->priv == PRV_S ||
+                  ((env->hmttcfg & HMTT_UINH) == 0 && env->priv == PRV_U));
+
+
+    if (!enable) {
         return;
     }
 
-    hmtt_update_cacheline(env, addr, pc, 1);
+    if (env->priv == PRV_U) {
+        env->hmttstoreinstrs += 1;
+    }
+    hmtt_update_memtrace(env, addr, pc, STORE);
 }
 
 

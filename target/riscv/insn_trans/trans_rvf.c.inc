@@ -55,6 +55,9 @@ static bool trans_flw(DisasContext *ctx, arg_flw *a)
     decode_save_opc(ctx, 0);
     addr = get_address(ctx, a->rs1, a->imm);
     dest = cpu_fpr[a->rd];
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(pc_now, ctx, 0);
+    gen_helper_hmtt_load_check(tcg_env, pc_now, addr);
     tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, memop);
     gen_nanbox_s(dest, dest);
 
@@ -76,6 +79,9 @@ static bool trans_fsw(DisasContext *ctx, arg_fsw *a)
 
     decode_save_opc(ctx, 0);
     addr = get_address(ctx, a->rs1, a->imm);
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(pc_now, ctx, 0);
+    gen_helper_hmtt_store_check(tcg_env, pc_now, addr);
     tcg_gen_qemu_st_i64(cpu_fpr[a->rs2], addr, ctx->mem_idx, memop);
     return true;
 }

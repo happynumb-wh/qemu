@@ -163,6 +163,9 @@ typedef struct DeviceOption {
     QTAILQ_ENTRY(DeviceOption) next;
 } DeviceOption;
 
+const char *hmtt_trace_file = NULL;
+const char *hmtt_elf_file = NULL;
+
 static const char *cpu_option;
 static const char *mem_path;
 static const char *incoming;
@@ -328,6 +331,24 @@ static QemuOptsList qemu_add_fd_opts = {
             .help = "free-form string used to describe fd",
         },
         { /* end of list */ }
+    },
+};
+
+static QemuOptsList qemu_hmtt_opts = {
+    .name = "hmtt",
+    .implied_opt_name = "qom-type",
+    .head = QTAILQ_HEAD_INITIALIZER(qemu_hmtt_opts.head),
+    .desc = {
+        { }
+    },
+};
+
+static QemuOptsList qemu_hmtt_elf_opts = {
+    .name = "hmtt-elf",
+    .implied_opt_name = "qom-type",
+    .head = QTAILQ_HEAD_INITIALIZER(qemu_hmtt_elf_opts.head),
+    .desc = {
+        { }
     },
 };
 
@@ -2866,6 +2887,8 @@ void qemu_init(int argc, char **argv)
     qemu_add_opts(&qemu_smp_opts);
     qemu_add_opts(&qemu_boot_opts);
     qemu_add_opts(&qemu_add_fd_opts);
+    qemu_add_opts(&qemu_hmtt_opts);
+    qemu_add_opts(&qemu_hmtt_elf_opts);
     qemu_add_opts(&qemu_object_opts);
     qemu_add_opts(&qemu_tpmdev_opts);
     qemu_add_opts(&qemu_overcommit_opts);
@@ -2984,6 +3007,12 @@ void qemu_init(int argc, char **argv)
             case QEMU_OPTION_snapshot:
                 snapshot = 1;
                 replay_add_blocker("-snapshot");
+                break;
+            case QEMU_OPTION_hmtt:
+                hmtt_trace_file = optarg;
+                break;
+            case QEMU_OPTION_hmtt_elf:
+                hmtt_elf_file = optarg;
                 break;
             case QEMU_OPTION_numa:
                 opts = qemu_opts_parse_noisily(qemu_find_opts("numa"),

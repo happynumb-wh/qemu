@@ -25,33 +25,15 @@
 #include "signal-common.h"
 #include "elf.h"
 #include "semihosting/common-semi.h"
+#include "hmtt.h"
 
-extern char *hmtt_trace_file;
+// extern char *hmtt_trace_file;
 void cpu_loop(CPURISCVState *env)
 {
     CPUState *cs = env_cpu(env);
     int trapnr;
     target_ulong ret;
 
-    if (hmtt_trace_file)
-    {
-
-        env->hmtt_state.file = hmtt_trace_file;
-        env->hmtt_state.index = 0;
-        env->hmtt_state.size = 0;
-        env->hmtt_state.cacheline = NULL;
-        FILE *f = fopen(env->hmtt_state.file, "r");
-        fseek(f, 0, SEEK_END);
-        env->hmtt_state.size = ftell(f) / 8;
-
-        env->hmtt_state.cacheline = malloc(env->hmtt_state.size * sizeof(uint64_t));
-        assert(env->hmtt_state.cacheline != NULL);
-        fseek(f, 0, SEEK_SET);
-        int num = fread(env->hmtt_state.cacheline, sizeof(uint64_t), env->hmtt_state.size, f);
-        fclose(f);
-        printf("hmtt trace file: %s, size: %lu, read: %d\n", env->hmtt_state.file, env->hmtt_state.size, num);
-
-    }
 
 
     for (;;) {

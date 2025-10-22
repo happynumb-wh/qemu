@@ -64,7 +64,18 @@
 #define CSR_VLENB           0xc22
 
 /* User hmtt cfg */
-#define CSR_HMTTCFG         0x088
+#define CSR_HMTTCFG         0x400
+#define CSR_HMTTINSTRS      0x401
+#define CSR_HMTTLOADINSTRS  0x402
+#define CSR_HMTTSTOREINSTRS 0x403
+
+#define HMTT_VALID          (1 << 0)
+#define HMTT_MINH           (1 << 1)
+#define HMTT_SINH           (1 << 2)
+#define HMTT_UINH           (1 << 3)
+#define HMTT_VSINH          (1 << 4)
+#define HMTT_VUINH          (1 << 5)
+
 
 /* VCSR fields */
 #define VCSR_VXSAT_SHIFT    0

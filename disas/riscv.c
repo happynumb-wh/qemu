@@ -2429,6 +2429,10 @@ static const char *csr_name(int csrno)
     case 0x03ed: return "pmpaddr61";
     case 0x03ee: return "pmpaddr62";
     case 0x03ef: return "pmpaddr63";
+    case 0x0400: return "hmttcfg";
+    case 0x0401: return "hmttinstrs";
+    case 0x0402: return "hmttloadinstrs";
+    case 0x0403: return "hmttstoreinstrs";
     case 0x0780: return "mtohost";
     case 0x0781: return "mfromhost";
     case 0x0782: return "mreset";
@@ -2513,7 +2517,6 @@ static const char *csr_name(int csrno)
     case 0x0c20: return "vl";
     case 0x0c21: return "vtype";
     case 0x0c22: return "vlenb";
-    case 0x0c33: return "hmttcfg";
     case 0x0c80: return "cycleh";
     case 0x0c81: return "timeh";
     case 0x0c82: return "instreth";

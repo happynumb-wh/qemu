@@ -2258,6 +2258,28 @@ void riscv_cpu_do_interrupt(CPUState *cs)
         default:
             break;
         }
+
+        int hmtt_enable = ((env->hmttcfg & HMTT_VALID) != 0) && \
+                (((env->hmttcfg & HMTT_MINH) == 0 && env->priv == PRV_M) || \
+                ((env->hmttcfg & HMTT_SINH) == 0 && env->priv == PRV_S) || \
+                ((env->hmttcfg & HMTT_UINH) == 0 && env->priv == PRV_U));
+
+        if (cause == RISCV_EXCP_LOAD_PAGE_FAULT ||\
+            cause == RISCV_EXCP_LOAD_ACCESS_FAULT)
+        {
+            if (hmtt_enable) {
+                env->hmttloadinstrs -= 1;
+            }
+        }
+
+        if (cause == RISCV_EXCP_STORE_PAGE_FAULT ||\
+            cause == RISCV_EXCP_STORE_AMO_ACCESS_FAULT)
+        {
+            if (hmtt_enable) {
+                env->hmttstoreinstrs -= 1;
+            }
+        }
+
         /* ecall is dispatched as one cause so translate based on mode */
         if (cause == RISCV_EXCP_U_ECALL) {
             assert(env->priv <= 3);

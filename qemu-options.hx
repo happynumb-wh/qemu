@@ -429,6 +429,15 @@ SRST
     to guest if it's explicitly specified in -smp.
 ERST
 
+
+DEF("hmtt", HAS_ARG, QEMU_OPTION_hmtt,
+    "-hmtt files\n",
+    QEMU_ARCH_ALL)
+
+DEF("hmtt-elf", HAS_ARG, QEMU_OPTION_hmtt_elf,
+"-hmtt-elf file\n",
+QEMU_ARCH_ALL)
+
 DEF("numa", HAS_ARG, QEMU_OPTION_numa,
     "-numa node[,mem=size][,cpus=firstcpu[-lastcpu]][,nodeid=node][,initiator=node]\n"
     "-numa node[,memdev=id][,cpus=firstcpu[-lastcpu]][,nodeid=node][,initiator=node]\n"

@@ -27,7 +27,6 @@
 #include "qemu/main-loop.h"
 #include "system/replay.h"
 #include "system/system.h"
-
 #ifdef CONFIG_SDL
 /*
  * SDL insists on wrapping the main() function with its own implementation on

@@ -23,7 +23,8 @@ riscv_ss.add(files(
   'crypto_helper.c',
   'zce_helper.c',
   'vcrypto_helper.c',
-  'hmtt.c'
+  'hmtt.c',
+  'hmtt_trace.c'
 ))
 
 riscv_system_ss = ss.source_set()
@@ -37,6 +38,8 @@ riscv_system_ss.add(files(
   'th_csr.c',
   'time_helper.c',
   'riscv-qmp-cmds.c',
+  'hmtt.c',
+  'hmtt_trace.c'
 ))
 
 subdir('tcg')

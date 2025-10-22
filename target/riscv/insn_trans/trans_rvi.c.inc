@@ -512,6 +512,7 @@ static bool gen_store(DisasContext *ctx, arg_sb *a, MemOp memop)
     }
     decode_save_opc(ctx, 0);
     if (get_xl(ctx) == MXL_RV128) {
+        printf("HMTT Store 128 Check\n");
         return gen_store_i128(ctx, a, memop);
     } else {
         return gen_store_tl(ctx, a, memop);

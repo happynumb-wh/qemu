@@ -34,7 +34,6 @@
 #include "cpu_cfg.h"
 #include "qapi/qapi-types-common.h"
 #include "cpu-qom.h"
-#include "hmtt.h"
 
 typedef struct CPUArchState CPURISCVState;
 
@@ -277,8 +276,10 @@ struct CPUArchState {
 
     /* HMTT csr */
     target_ulong hmttcfg;
+    target_ulong hmttinstrs;
+    target_ulong hmttloadinstrs;
+    target_ulong hmttstoreinstrs;
 
-    HMTTState hmtt_state;
 
 #ifndef CONFIG_USER_ONLY
     /* This contains QEMU specific information about the virt state. */

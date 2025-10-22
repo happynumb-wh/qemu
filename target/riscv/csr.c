@@ -850,12 +850,56 @@ static RISCVException read_hmttcfg(CPURISCVState *env, int csrno,
     return RISCV_EXCP_NONE;
 }
 
+
 static RISCVException write_hmttcfg(CPURISCVState *env, int csrno,
                                   target_ulong val, uintptr_t ra)
 {
     env->hmttcfg = val;
     return RISCV_EXCP_NONE;
 }
+
+static RISCVException read_hmttinstrs(CPURISCVState *env, int csrno,
+                                 target_ulong *val)
+{
+    *val = env->hmttinstrs;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException write_hmttinstrs(CPURISCVState *env, int csrno,
+                                  target_ulong val, uintptr_t ra)
+{
+    env->hmttinstrs = val;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException read_hmttloadinstrs(CPURISCVState *env, int csrno,
+                                     target_ulong *val)
+{
+    *val = env->hmttloadinstrs;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException write_hmttloadinstrs(CPURISCVState *env, int csrno,
+                                      target_ulong val, uintptr_t ra)
+{
+    env->hmttloadinstrs = val;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException read_hmttstoreinstrs(CPURISCVState *env, int csrno,
+                                      target_ulong *val)
+{
+    *val = env->hmttstoreinstrs;
+    return RISCV_EXCP_NONE;
+}
+
+static RISCVException write_hmttstoreinstrs(CPURISCVState *env, int csrno,
+                                       target_ulong val, uintptr_t ra)
+{
+    env->hmttstoreinstrs = val;
+    return RISCV_EXCP_NONE;
+}
+
 
 /* zicfiss CSR_SSP read and write */
 static RISCVException read_ssp(CPURISCVState *env, int csrno,
@@ -5847,6 +5891,10 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
 
     /* User Hmtt cfg */
     [CSR_HMTTCFG] = { "hmttcfg", hmtt, read_hmttcfg, write_hmttcfg},
+    [CSR_HMTTINSTRS] = { "hmttinstrs", hmtt, read_hmttinstrs, write_hmttinstrs},
+    [CSR_HMTTLOADINSTRS] = { "hmttloadinstrs", hmtt, read_hmttloadinstrs, write_hmttloadinstrs},
+    [CSR_HMTTSTOREINSTRS] = { "hmttstoreinstrs", hmtt, read_hmttstoreinstrs, write_hmttstoreinstrs},
+
     /*
      * In privileged mode, the monitor will have to emulate TIME CSRs only if
      * rdtime callback is not provided by machine/platform emulation.

@@ -130,6 +130,7 @@ static void usage(int exitcode);
 static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
 const char *qemu_uname_release;
 char *hmtt_trace_file = NULL;
+char *hmtt_elf_file = NULL;
 
 #if !defined(TARGET_DEFAULT_STACK_SIZE)
 /* XXX: on x86 MAP_GROWSDOWN only works if ESP <= address + 32, so
@@ -468,6 +469,11 @@ static void handle_arg_hmtt(const char *arg)
     hmtt_trace_file = strdup(arg);
 }
 
+static void handle_arg_hmtt_elf(const char *arg)
+{
+    hmtt_elf_file = strdup(arg);
+}
+
 
 static void handle_arg_perfmap(const char *arg)
 {
@@ -561,6 +567,8 @@ static const struct qemu_argument arg_table[] = {
      "",           "Generate a jit-${pid}.dump file for perf"},
     {"hmtt",       "QEMU_HMTT",        true,  handle_arg_hmtt,
      "file",       "Enable HMTT trace files"},
+    {"hmtt-elf",   "QEMU_HMTT_ELF",    true,  handle_arg_hmtt_elf,
+     "file",       "Set ELF file for HMTT to get .text section info"},
     {NULL, NULL, false, NULL, NULL, NULL}
 };
 
