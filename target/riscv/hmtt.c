@@ -218,6 +218,12 @@ int hmtt_forward(CPURISCVState *env, uint64_t addr, uint64_t pc, int type)
 int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int type)
 {
     if (hmtt_end) return -1;
+
+    if (hmtt_trace_file == NULL)
+    {
+        return -1;
+    }
+
     if (hmtt_trace_fp == NULL && hmtt_trace_file)
     {
         // Init hmtt_state
