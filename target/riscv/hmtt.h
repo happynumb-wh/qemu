@@ -81,6 +81,8 @@ extern FILE * record_fp;
 
 extern uint64_t gb_store_counter;
 extern uint64_t gb_load_counter;
+extern uint64_t gb_load_addr;
+extern uint64_t gb_store_addr;
 
 extern int trace_end;
 extern int hmtt_end;

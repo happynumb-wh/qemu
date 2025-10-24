@@ -230,8 +230,8 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
         init_hmtt_state();
     }
 
-    // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
-    if ((gb_load_counter + gb_store_counter) <= 100000000UL)
+    if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
+    // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
     {
         fprintf(record_fp, "0x%lx,%s,0x%lx,l: %ld,s: %ld\n", pc, type == 1 ? "W" : "R", addr, env->hmttloadinstrs, env->hmttstoreinstrs);
         // fprintf(record_fp, "l: %ld, s: %ld\n", env->hmttloadinstrs, env->hmttstoreinstrs);
@@ -247,6 +247,12 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
     if (type == STORE && env->hmttstoreinstrs < gb_store_counter)
     {
         return -1;
+    }
+
+
+    if (type == LOAD && CACHELINE_INDEX(addr) == CACHELINE_INDEX(gb_load_addr) && (env->hmttloadinstrs - gb_load_counter) < 16)
+    {
+        fprintf(stderr, "LOAD miss: pc: 0x%lx, addr: 0x%lx, l: %ld, s: %ld\n", pc, addr, env->hmttloadinstrs, env->hmttstoreinstrs);
     }
 
     return hmtt_forward(env, addr, pc, type);

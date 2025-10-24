@@ -11,6 +11,8 @@
 
 uint64_t gb_store_counter = 0;
 uint64_t gb_load_counter = 0;
+uint64_t gb_load_addr = 0;
+uint64_t gb_store_addr = 0;
 
 int record_switch = 1;
 
@@ -129,20 +131,22 @@ int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
         fprintf(record_log_fp, "0x%lx hit\n", addr);
     }
     cache_record_t pop_addr = {0};
-
     while (1)
     {
         get_item_from_trace(&pop_addr);
         gb_load_counter =  pop_addr.r_ret;
         gb_store_counter = pop_addr.w_ret;
+        gb_load_addr = pop_addr.addr_r;
+        gb_store_addr = pop_addr.addr_w;
         
-        // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
-        if ((gb_load_counter + gb_store_counter) <= 100000000UL)
+        if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
+        // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
         {
             if (pop_addr.addr_r)
             {
                 // if (pop_addr.r_ret)
                     fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld\n","R", pop_addr.addr_r, pc, pop_addr.r_ret, pop_addr.w_ret);
+                                   
                 // fprintf(record_log_fp, "l: %ld, s: %ld\n", pop_addr.r_ret, pop_addr.w_ret);
             }
 
@@ -153,8 +157,12 @@ int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
                 // fprintf(record_log_fp, "l: %ld, s: %ld\n", pop_addr.r_ret, pop_addr.w_ret);
             }
 
+
+
             fflush(record_log_fp);
         }
+
+
 
         if ((type == LOAD && gb_load_counter > env->hmttloadinstrs) || \
             (type == STORE && gb_store_counter > env->hmttstoreinstrs))
