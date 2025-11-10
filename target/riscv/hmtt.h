@@ -18,19 +18,31 @@
 #define CACHELINE_DIRTY     (1UL << 1)
 #define CACHELINE_ACCESSED  (1UL << 2)
 
-#define TRACE_LENGTH      32
+#define TRACE_LENGTH      12
 
 #define LOAD 0
 #define STORE 1
 
 
+typedef struct __attribute__((packed)) HMTTRawTraceEntry {
+    uint64_t addr;
+    uint16_t r_ret;
+    uint16_t w_ret;
+    // uint64_t ptr;
+} HMTTRawTraceEntry;
+
+
 typedef struct HMTTTraceEntry {
-    uint64_t r_ret;
-    uint64_t w_ret;
-    uint64_t addr_r;
-    uint64_t addr_w;
+    uint64_t addr;
+    uint8_t RW; // 0: read, 1: write
+    uint8_t NE;
+    uint8_t timer;
+    uint16_t axi_id;
+    uint16_t r_ret;
+    uint16_t w_ret;
     // uint64_t ptr;
 } HMTTTraceEntry;
+
 
 typedef struct HMTTState {
     char * file;
@@ -68,7 +80,7 @@ int hmtt_forward(CPURISCVState *env, uint64_t addr, uint64_t pc, int type);
 
 // Ring Buffer for trace addresses
 extern int trace_buffer_ok;
-extern HMTTTraceEntry * trace_buffer;
+extern HMTTRawTraceEntry * trace_buffer;
 extern pthread_mutex_t buffer_lock;
 extern uint64_t global_num;
 extern uint64_t trace_file_size;

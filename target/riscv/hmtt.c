@@ -11,7 +11,7 @@ HMTTState hmtt_state;
 FILE *hmtt_trace_fp = NULL;
 int trace_end = 0;
 int hmtt_end = 0;
-HMTTTraceEntry * trace_buffer = NULL;
+HMTTRawTraceEntry * trace_buffer = NULL;
 uint64_t trace_file_size = 0;
 
 
@@ -93,7 +93,7 @@ void init_hmtt_state(void)
     memset(hmtt_state.cacheline, 0, CACHELINE_SIZE);
     hmtt_state.trace_cacheline = malloc(MAX_TRACE_SIZE * sizeof(HMTTTraceEntry));
     assert(hmtt_state.trace_cacheline != NULL);
-    trace_buffer = malloc(MAX_TRACE_SIZE * sizeof(HMTTTraceEntry));
+    trace_buffer = malloc(MAX_TRACE_SIZE * sizeof(HMTTRawTraceEntry));
     assert(trace_buffer != NULL);
     hmtt_state.trace_ptr = 0;
 
@@ -147,40 +147,38 @@ wait:
     // trace_file_size += (num * TRACE_LENGTH);
     // printf("Read %ld entries from trace file, total size: %ld GB\n", num, trace_file_size / (1024 * 1024 * 1024));
     assert(num > 0);
-    hmtt_state.trace_ptr += (MAX_TRACE_SIZE * sizeof(HMTTTraceEntry));
+    hmtt_state.trace_ptr += (MAX_TRACE_SIZE * sizeof(HMTTRawTraceEntry));
     for (int i = 0; i < num; i++)
     {
-        uint64_t addr_r = (trace_buffer[i].addr_r & 0x7fffffff) << 5;
-        uint64_t addr_w = (trace_buffer[i].addr_w & 0x7fffffff) << 5;
-        int save_r = 0;
-        int save_w = 0;
+        uint64_t addr = (trace_buffer[i].addr & 0x3fffffff) << 6;
+        uint16_t axi_id = (trace_buffer[i].addr >> 30) & 0x3fff;
+        uint8_t timer = (trace_buffer[i].addr >> 44) & 0xff;
+        uint8_t RW = (trace_buffer[i].addr >> 60) & 0x1;
+        uint8_t NE = (trace_buffer[i].addr >> 61) & 0x1;
+        int save = 0;
 
-        addr_r = addr_check(addr_r);
+        addr = addr_check(addr);
         
-        if (addr_r != (uint64_t)-1)
-            save_r = 1;
+        if (addr != (uint64_t)-1)
+            save = 1;
         
-        addr_w = addr_check(addr_w);
-        if (addr_w != (uint64_t)-1)
-            save_w = 1;
 
-        if (!save_r && !save_w)
+        if (!save)
             continue;
         
         int index = hmtt_state.size++;
-        hmtt_state.trace_cacheline[index].addr_r = 0;
-        hmtt_state.trace_cacheline[index].addr_w = 0;
+        hmtt_state.trace_cacheline[index].addr = 0;
+
         hmtt_state.trace_cacheline[index].r_ret = trace_buffer[i].r_ret;
         hmtt_state.trace_cacheline[index].w_ret = trace_buffer[i].w_ret;
-        if (save_r)
+        hmtt_state.trace_cacheline[index].RW = RW;
+        hmtt_state.trace_cacheline[index].timer = timer;
+        hmtt_state.trace_cacheline[index].axi_id = axi_id;
+        hmtt_state.trace_cacheline[index].NE = NE;
+        if (save)
         {   
-            assert((addr_r & 0x3f) == 0);
-            hmtt_state.trace_cacheline[index].addr_r = addr_r;
-        }
-        if (save_w)
-        {
-            assert((addr_w & 0x3f) == 0);
-            hmtt_state.trace_cacheline[index].addr_w = addr_w;
+            assert((addr & 0x3f) == 0);
+            hmtt_state.trace_cacheline[index].addr = addr;
         }
     }
     trace_buffer_ok = 0;
@@ -230,13 +228,13 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
         init_hmtt_state();
     }
 
-    if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
-    // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
-    {
-        fprintf(record_fp, "0x%lx,%s,0x%lx,l: %ld,s: %ld\n", pc, type == 1 ? "W" : "R", addr, env->hmttloadinstrs, env->hmttstoreinstrs);
-        // fprintf(record_fp, "l: %ld, s: %ld\n", env->hmttloadinstrs, env->hmttstoreinstrs);
-        fflush(record_fp);
-    }
+    // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
+    // // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
+    // {
+    //     fprintf(record_fp, "0x%lx,%s,0x%lx,l: %ld,s: %ld\n", pc, type == 1 ? "W" : "R", addr, env->hmttloadinstrs, env->hmttstoreinstrs);
+    //     // fprintf(record_fp, "l: %ld, s: %ld\n", env->hmttloadinstrs, env->hmttstoreinstrs);
+    //     fflush(record_fp);
+    // }
 
 
     if (type == LOAD && env->hmttloadinstrs < gb_load_counter)
@@ -250,10 +248,10 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
     }
 
 
-    if (type == LOAD && CACHELINE_INDEX(addr) == CACHELINE_INDEX(gb_load_addr) && (env->hmttloadinstrs - gb_load_counter) < 16)
-    {
-        fprintf(stderr, "LOAD miss: pc: 0x%lx, addr: 0x%lx, l: %ld, s: %ld\n", pc, addr, env->hmttloadinstrs, env->hmttstoreinstrs);
-    }
+    // if (type == LOAD && CACHELINE_INDEX(addr) == CACHELINE_INDEX(gb_load_addr) && (env->hmttloadinstrs - gb_load_counter) < 16)
+    // {
+    //     fprintf(stderr, "LOAD miss: pc: 0x%lx, addr: 0x%lx, l: %ld, s: %ld\n", pc, addr, env->hmttloadinstrs, env->hmttstoreinstrs);
+    // }
 
     return hmtt_forward(env, addr, pc, type);
 }

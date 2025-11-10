@@ -13,7 +13,7 @@ b main
 b update_cache_status
 
 run -M virt -m 16G \
-    -hmtt /data/mcf_riscv_simpoint_1/mcf_counter.trace \
+    -hmtt /data/mcf_riscv_simpoint_1/mcf_test.trace \
     -hmtt-elf /home/wanghan/Workspace/HMTT/qemu-trace/mcf-dir/mcf \
     -cpu rv64 \
     -nographic \

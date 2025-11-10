@@ -1,0 +1,433 @@
+   0.046503783s  INFO prepare_target{force=false package_id=hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet) target="hpet"}: cargo::core::compiler::fingerprint: fingerprint error for hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("hpet", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet/src/lib.rs", Edition2021) }
+   0.046532630s  INFO prepare_target{force=false package_id=hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet) target="hpet"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/hpet-203f400c72dc183f/lib-hpet`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.106595395s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="qemu_api"}: cargo::core::compiler::fingerprint: fingerprint error for qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("qemu_api", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api/src/lib.rs", Edition2021) }
+   0.106622879s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="qemu_api"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/qemu_api-76aa6af0f55c3362/lib-qemu_api`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  16: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  17: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  18: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  20: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  21: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  22: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  23: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  24: main
+  25: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  26: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  27: <unknown>
+   0.107134188s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="build-script-build"}: cargo::core::compiler::fingerprint: fingerprint error for qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)/RunCustomBuild/TargetInner { ..: custom_build_target("build-script-build", "/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api/build.rs", Edition2021) }
+   0.107149064s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="build-script-build"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/qemu_api-a69203b49462a649/run-build-script-build-script-build`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::custom_build::build_work
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: cargo::core::compiler::compile
+   8: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   9: cargo::ops::cargo_compile::compile_ws
+  10: cargo::ops::cargo_compile::compile_with_exec
+  11: cargo::ops::cargo_compile::compile
+  12: cargo::commands::check::exec
+  13: <cargo::cli::Exec>::exec
+  14: cargo::main
+  15: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  16: std::rt::lang_start::<()>::{closure#0}
+  17: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  18: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  19: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  20: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  21: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  22: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  23: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  24: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  26: main
+  27: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  28: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  29: <unknown>
+   0.107356335s  INFO prepare_target{force=false package_id=hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet) target="hpet"}: cargo::core::compiler::fingerprint: fingerprint error for hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("hpet", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet/src/lib.rs", Edition2021) }
+   0.107369395s  INFO prepare_target{force=false package_id=hpet v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/timer/hpet) target="hpet"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/hpet-a6332da15edd0529/test-lib-hpet`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.107731638s  INFO prepare_target{force=false package_id=pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011) target="pl011"}: cargo::core::compiler::fingerprint: fingerprint error for pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("pl011", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011/src/lib.rs", Edition2021) }
+   0.107745643s  INFO prepare_target{force=false package_id=pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011) target="pl011"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/pl011-b4dfe24aa15b3ee4/lib-pl011`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.108188285s  INFO prepare_target{force=false package_id=pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011) target="pl011"}: cargo::core::compiler::fingerprint: fingerprint error for pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("pl011", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011/src/lib.rs", Edition2021) }
+   0.108203300s  INFO prepare_target{force=false package_id=pl011 v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/hw/char/pl011) target="pl011"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/pl011-339bebc5eec7324f/test-lib-pl011`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.108542639s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="qemu_api"}: cargo::core::compiler::fingerprint: fingerprint error for qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("qemu_api", ["lib"], "/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api/src/lib.rs", Edition2021) }
+   0.108568944s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="qemu_api"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/qemu_api-9e0192ee2938ee70/test-lib-qemu_api`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.108770349s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="tests"}: cargo::core::compiler::fingerprint: fingerprint error for qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)/Check { test: true }/TargetInner { kind: "test", name: "tests", benched: false, ..: with_path("/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api/tests/tests.rs", Edition2021) }
+   0.108785132s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="tests"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/qemu_api-d0c643bef0f98d2d/test-integration-test-tests`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   0.108991572s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="vmstate_tests"}: cargo::core::compiler::fingerprint: fingerprint error for qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)/Check { test: true }/TargetInner { kind: "test", name: "vmstate_tests", benched: false, ..: with_path("/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api/tests/vmstate_tests.rs", Edition2021) }
+   0.109003229s  INFO prepare_target{force=false package_id=qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api) target="vmstate_tests"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/.fingerprint/qemu_api-b1717950984f7751/test-integration-test-vmstate_tests`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  15: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  16: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  19: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  20: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+   Compiling qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)
+error: failed to run custom build command for `qemu_api v0.1.0 (/home/wanghan/Workspace/HMTT/qemu/rust/qemu-api)`
+note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+
+Caused by:
+  process didn't exit successfully: `/home/wanghan/Workspace/HMTT/qemu/rust/target/debug/build/qemu_api-9029bb3ee18942d8/build-script-build` (exit status: 101)
+  --- stderr
+
+  thread 'main' panicked at qemu-api/build.rs:22:9:
+
+      No generated C bindings found! Maybe you wanted one of
+      `make clippy`, `make rustfmt`, `make rustdoc`?
+
+      For other uses of `cargo`, start a subshell with
+      `pyvenv/bin/meson devenv`, or point MESON_BUILD_ROOT to
+      the top of the build tree.
+  stack backtrace:
+     0: __rustc::rust_begin_unwind
+               at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:697:5
+     1: core::panicking::panic_fmt
+               at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/panicking.rs:75:14
+     2: build_script_build::main
+     3: core::ops::function::FnOnce::call_once
+  note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.

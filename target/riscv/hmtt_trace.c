@@ -17,10 +17,13 @@ uint64_t gb_store_addr = 0;
 int record_switch = 1;
 
 typedef struct {
+    uint64_t addr;
     uint64_t r_ret;
     uint64_t w_ret;
-    uint64_t addr_r;
-    uint64_t addr_w;
+    uint8_t NE;
+    uint8_t RW;
+    uint8_t timer;
+    uint16_t axi_id;
     uint64_t ptr;
 } cache_record_t;
 
@@ -63,8 +66,7 @@ __attribute_maybe_unused__ static bool rb_pop(RingBuffer *rb, cache_record_t *da
     if (rb_is_empty(rb)) {
         return false;  // empty buffer
     }
-    data->addr_r = rb->buffer[rb->tail].addr_r;
-    data->addr_w = rb->buffer[rb->tail].addr_w;
+    data->addr = rb->buffer[rb->tail].addr;
     data->r_ret = rb->buffer[rb->tail].r_ret;
     data->w_ret = rb->buffer[rb->tail].w_ret;
     data->ptr = rb->buffer[rb->tail].ptr;
@@ -74,7 +76,7 @@ __attribute_maybe_unused__ static bool rb_pop(RingBuffer *rb, cache_record_t *da
 }
 
 // get a trace item from trace buffer
-static void get_item_from_trace(cache_record_t * item)
+static int get_item_from_trace(cache_record_t * item)
 {
 
     if (hmtt_state.size == hmtt_state.index)
@@ -82,7 +84,11 @@ static void get_item_from_trace(cache_record_t * item)
         hmtt_state.size = 0;
         hmtt_state.index = 0;
         if (trace_end)
+        {
             hmtt_end = 1;
+            return -1;
+        }
+            
 
         while (hmtt_state.size == 0)
         {
@@ -101,12 +107,15 @@ static void get_item_from_trace(cache_record_t * item)
         }
     }
 
-    item->addr_r = hmtt_state.trace_cacheline[hmtt_state.index].addr_r;
-    item->addr_w = hmtt_state.trace_cacheline[hmtt_state.index].addr_w;
+    item->addr = hmtt_state.trace_cacheline[hmtt_state.index].addr;
     item->r_ret = hmtt_state.trace_cacheline[hmtt_state.index].r_ret;
     item->w_ret = hmtt_state.trace_cacheline[hmtt_state.index].w_ret;
+    item->RW = hmtt_state.trace_cacheline[hmtt_state.index].RW;
+    item->timer = hmtt_state.trace_cacheline[hmtt_state.index].timer;
+    item->axi_id = hmtt_state.trace_cacheline[hmtt_state.index].axi_id;
     hmtt_state.index++;
     item->ptr = hmtt_state.trace_ptr;
+    return 0;
 }
 
 
@@ -123,7 +132,6 @@ void init_trace_buffer(void)
 }
 
 
-
 int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
 {
     if (record_flag)
@@ -133,36 +141,26 @@ int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
     cache_record_t pop_addr = {0};
     while (1)
     {
-        get_item_from_trace(&pop_addr);
-        gb_load_counter =  pop_addr.r_ret;
-        gb_store_counter = pop_addr.w_ret;
-        gb_load_addr = pop_addr.addr_r;
-        gb_store_addr = pop_addr.addr_w;
-        
-        if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
-        // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
+        if (get_item_from_trace(&pop_addr) == -1)
         {
-            if (pop_addr.addr_r)
-            {
-                // if (pop_addr.r_ret)
-                    fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld\n","R", pop_addr.addr_r, pc, pop_addr.r_ret, pop_addr.w_ret);
-                                   
-                // fprintf(record_log_fp, "l: %ld, s: %ld\n", pop_addr.r_ret, pop_addr.w_ret);
-            }
-
-            if (pop_addr.addr_w)
-            {
-                // if (pop_addr.w_ret)
-                    fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld\n","W", pop_addr.addr_w, pc, pop_addr.r_ret, pop_addr.w_ret);
-                // fprintf(record_log_fp, "l: %ld, s: %ld\n", pop_addr.r_ret, pop_addr.w_ret);
-            }
-
-
-
-            fflush(record_log_fp);
+            return -1;
         }
+        gb_load_counter +=  pop_addr.r_ret;
+        gb_store_counter += pop_addr.w_ret;
 
-
+        if (pop_addr.RW == LOAD)
+            gb_load_addr = pop_addr.addr;
+        else
+            gb_store_addr = pop_addr.addr;
+        
+        // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
+        // {
+            // if (pop_addr.addr)
+            // {
+            //     fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld\n", pop_addr.RW == LOAD ? "R" : "W", pop_addr.addr, pc, gb_load_counter, gb_store_counter); 
+            //     fflush(record_log_fp);
+            // }
+        // }
 
         if ((type == LOAD && gb_load_counter > env->hmttloadinstrs) || \
             (type == STORE && gb_store_counter > env->hmttstoreinstrs))
