@@ -22,8 +22,10 @@ pthread_t thread_id;
 int record_flag = 0;
 const char * record_file = "hmtt_record.txt";
 const char * record_log_file = "hmtt_record.log";
+const char * record_redirect_file = "hmtt_redirect.log";
 FILE * record_fp = NULL;
 FILE * record_log_fp = NULL;
+FILE * record_redirect_fp = NULL;
 
 
 elf_info_t elf_info;
@@ -101,6 +103,9 @@ void init_hmtt_state(void)
     assert(record_fp != NULL);
     record_log_fp = fopen(record_log_file, "w");
     assert(record_log_fp != NULL);
+    record_redirect_fp = fopen(record_redirect_file, "w");
+    assert(record_redirect_fp != NULL);
+
 
     if (hmtt_elf_file)
     {
@@ -116,7 +121,7 @@ static uint64_t addr_check(uint64_t addr)
 {
 
     uint64_t offset_addr;
-    if (addr == 0) return -1;
+    // if (addr == 0) return -1;
     if (addr < PHYS_MEM_BASE || addr >= (PHYS_MEM_BASE + PHYS_MEM_SIZE))
     {
         offset_addr = addr;
@@ -140,6 +145,8 @@ wait:
     pthread_mutex_lock(&buffer_lock);
     if (trace_buffer_ok == 0) {
         pthread_mutex_unlock(&buffer_lock);
+        if (trace_end && trace_buffer_ok == 0) 
+            return;
         goto wait;
     }
 
@@ -175,11 +182,9 @@ wait:
         hmtt_state.trace_cacheline[index].timer = timer;
         hmtt_state.trace_cacheline[index].axi_id = axi_id;
         hmtt_state.trace_cacheline[index].NE = NE;
-        if (save)
-        {   
-            assert((addr & 0x3f) == 0);
-            hmtt_state.trace_cacheline[index].addr = addr;
-        }
+        assert((addr & 0x3f) == 0);
+        hmtt_state.trace_cacheline[index].addr = addr;
+
     }
     trace_buffer_ok = 0;
     pthread_mutex_unlock(&buffer_lock);
@@ -227,15 +232,17 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
         // Init hmtt_state
         init_hmtt_state();
     }
+    uint64_t total_rw = env->hmttloadinstrs + env->hmttstoreinstrs;
 
-    // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
-    // // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
-    // {
-    //     fprintf(record_fp, "0x%lx,%s,0x%lx,l: %ld,s: %ld\n", pc, type == 1 ? "W" : "R", addr, env->hmttloadinstrs, env->hmttstoreinstrs);
-    //     // fprintf(record_fp, "l: %ld, s: %ld\n", env->hmttloadinstrs, env->hmttstoreinstrs);
-    //     fflush(record_fp);
-    // }
+    if (total_rw >= 0x54c3996bbUL && total_rw <= 0x54d29b116UL)
+    // if ((gb_load_counter + gb_store_counter) <= 100000000UL)
+    {
+        fprintf(record_fp, "0x%lx,%s,0x%lx,l: %ld,s: %ld\n", pc, type == 1 ? "W" : "R", addr, env->hmttloadinstrs, env->hmttstoreinstrs);
+        // fprintf(record_fp, "l: %ld, s: %ld\n", env->hmttloadinstrs, env->hmttstoreinstrs);
+        fflush(record_fp);
+    }
 
+    return 0;
 
     if (type == LOAD && env->hmttloadinstrs < gb_load_counter)
     {
@@ -252,6 +259,30 @@ int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int typ
     // {
     //     fprintf(stderr, "LOAD miss: pc: 0x%lx, addr: 0x%lx, l: %ld, s: %ld\n", pc, addr, env->hmttloadinstrs, env->hmttstoreinstrs);
     // }
+    return 0;
+    // return hmtt_forward(env, addr, pc, type);
+}
 
-    return hmtt_forward(env, addr, pc, type);
+
+void hmtt_record_redirect(CPURISCVState *env, uint64_t addr, uint64_t newpc, uint64_t nextpc)
+{
+    if (hmtt_end) return;
+
+    if (hmtt_trace_file == NULL)
+    {
+        return;
+    }
+
+    if (hmtt_trace_fp == NULL && hmtt_trace_file)
+    {
+        // Init hmtt_state
+        init_hmtt_state();
+    }
+    uint64_t total_rw = env->hmttloadinstrs + env->hmttstoreinstrs;
+
+    if (total_rw >= 0x54c3996bbUL && total_rw <= 0x54d29b116UL)
+    {
+        fprintf(record_redirect_fp, "0x%lx -> 0x%lx\n", addr, newpc);
+        fflush(record_redirect_fp);        
+    }
 }

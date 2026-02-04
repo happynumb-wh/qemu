@@ -9,13 +9,11 @@
 
 file qemu-system-riscv64
 
-b main 
-b update_cache_status
-
+b hmtt_forward
 run -M virt -m 16G \
-    -hmtt /data/mcf_riscv_simpoint_1/mcf_test.trace \
-    -hmtt-elf /home/wanghan/Workspace/HMTT/qemu-trace/mcf-dir/mcf \
     -cpu rv64 \
     -nographic \
+    -hmtt /data/memory-bound-trace/libquantum-split/piece000536.trc \
+    -hmtt-elf /home/wanghan/Workspace/DASICS_ICT/rootfs/collect/libquantum/libquantum \
     -device loader,file=${LINUX_DIR}/arch/riscv/boot/Image,addr=0x80400000 \
     -bios ${OpenSBI_DIR}/build/platform/generic/firmware/fw_jump.bin

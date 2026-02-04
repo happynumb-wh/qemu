@@ -70,6 +70,7 @@ extern const char *hmtt_elf_file;
 typedef struct CPUArchState CPURISCVState;
 
 int hmtt_update_memtrace(CPURISCVState *env, uint64_t addr, uint64_t pc, int type);
+void hmtt_record_redirect(CPURISCVState *env, uint64_t addr, uint64_t newpc, uint64_t nextpc);
 void init_hmtt_state(void);
 void fill_hmtt_trace(void);
 void get_trace_from_file(void);

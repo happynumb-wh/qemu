@@ -9,8 +9,8 @@
 
 #define RING_BUFFER_SIZE 512//(0x800000 / 64)  // size of ring buffer
 
-uint64_t gb_store_counter = 0;
-uint64_t gb_load_counter = 0;
+uint64_t gb_store_counter = 0x21a38de5c;
+uint64_t gb_load_counter = 0x389a43aea;
 uint64_t gb_load_addr = 0;
 uint64_t gb_store_addr = 0;
 
@@ -85,31 +85,31 @@ static int get_item_from_trace(cache_record_t * item)
         hmtt_state.index = 0;
         if (trace_end)
         {
+            // Just try to get trace
+            fill_hmtt_trace();
+
+            if (hmtt_state.size == 0)
+            {
+                hmtt_end = 1;
+                return -1;                
+            }
+        }
+            
+        fill_hmtt_trace();
+    
+        if (hmtt_state.size == 0)
+        {
             hmtt_end = 1;
             return -1;
         }
-            
-
-        while (hmtt_state.size == 0)
-        {
-            fill_hmtt_trace();
-            // hmtt_state.trace_ptr += (MAX_TRACE_SIZE * sizeof(HMTTTraceEntry));
-        }
         
-        if (record_flag) {
-            printf("end to record\n");
-            if (record_flag && record_fp)
-            {
-                fclose(record_fp);
-                record_fp = NULL;
-                record_flag = 0;
-            }
-        }
     }
 
+
+
     item->addr = hmtt_state.trace_cacheline[hmtt_state.index].addr;
-    item->r_ret = hmtt_state.trace_cacheline[hmtt_state.index].r_ret;
-    item->w_ret = hmtt_state.trace_cacheline[hmtt_state.index].w_ret;
+    item->r_ret = (uint64_t)hmtt_state.trace_cacheline[hmtt_state.index].r_ret;
+    item->w_ret = (uint64_t)hmtt_state.trace_cacheline[hmtt_state.index].w_ret;
     item->RW = hmtt_state.trace_cacheline[hmtt_state.index].RW;
     item->timer = hmtt_state.trace_cacheline[hmtt_state.index].timer;
     item->axi_id = hmtt_state.trace_cacheline[hmtt_state.index].axi_id;
@@ -139,6 +139,7 @@ int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
         fprintf(record_log_fp, "0x%lx hit\n", addr);
     }
     cache_record_t pop_addr = {0};
+    // uint64_t cache_address = addr & ~0x3f;
     while (1)
     {
         if (get_item_from_trace(&pop_addr) == -1)
@@ -153,14 +154,23 @@ int update_hmtt_trace(CPURISCVState *env, uint64_t pc, uint64_t addr, int type)
         else
             gb_store_addr = pop_addr.addr;
         
-        // if ((gb_load_counter + gb_store_counter) >= 20000000000UL && (gb_load_counter + gb_store_counter) <= 20100000000UL)
+        // if ((gb_load_counter + gb_store_counter) >= 10000000000UL && (gb_load_counter + gb_store_counter) <= 11000000000UL)
         // {
-            // if (pop_addr.addr)
-            // {
-            //     fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld\n", pop_addr.RW == LOAD ? "R" : "W", pop_addr.addr, pc, gb_load_counter, gb_store_counter); 
-            //     fflush(record_log_fp);
-            // }
+            if (pop_addr.addr)
+            {
+                fprintf(record_log_fp, "%s,0x%lx, pc: 0x%lx, l: %ld, s: %ld, axi_id: %d\n", pop_addr.RW == LOAD ? "R" : "W", pop_addr.addr, pc, gb_load_counter, gb_store_counter, pop_addr.axi_id); 
+                fflush(record_log_fp);
+            }
         // }
+
+        // if (type == LOAD)
+        // {
+        //     if (pop_addr.RW == LOAD && pop_addr.addr == cache_address && gb_load_counter == env->hmttloadinstrs)
+        //     {
+        //         fprintf(stderr, "LOAD cache miss: 0x%lx, pc: 0x%lx, total load: %ld\n", addr, pc, gb_load_counter);
+        //     }
+        // }
+        
 
         if ((type == LOAD && gb_load_counter > env->hmttloadinstrs) || \
             (type == STORE && gb_store_counter > env->hmttstoreinstrs))

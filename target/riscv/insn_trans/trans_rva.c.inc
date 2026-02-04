@@ -39,6 +39,10 @@ static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
     if (a->rl) {
         tcg_gen_mb(TCG_MO_ALL | TCG_BAR_STRL);
     }
+        // TCGv pc_now = tcg_temp_new();
+        // gen_pc_plus_diff(pc_now, ctx, 0);
+        // gen_helper_hmtt_load_check(tcg_env, pc_now, src1);
+
     tcg_gen_qemu_ld_tl(load_val, src1, ctx->mem_idx, mop);
     /*
      * TSO defines AMOs as acquire+release-RCsc, but does not define LR/SC as
@@ -64,7 +68,9 @@ static bool gen_sc(DisasContext *ctx, arg_atomic *a, MemOp mop)
     decode_save_opc(ctx, 0);
     src1 = get_address(ctx, a->rs1, 0);
     tcg_gen_brcond_tl(TCG_COND_NE, load_res, src1, l1);
-
+    // TCGv pc_now = tcg_temp_new();
+    // gen_pc_plus_diff(pc_now, ctx, 0);
+    // gen_helper_hmtt_store_check(tcg_env, pc_now, src1);
     /*
      * Note that the TCG atomic primitives are SC,
      * so we can ignore AQ/RL along this path.

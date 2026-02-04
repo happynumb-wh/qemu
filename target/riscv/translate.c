@@ -284,6 +284,7 @@ static void exit_tb(DisasContext *ctx)
 #endif
     tcg_gen_exit_tb(NULL, 0);
 }
+#include "hmtt.h"
 
 static void gen_goto_tb(DisasContext *ctx, int n, target_long diff)
 {
@@ -293,6 +294,20 @@ static void gen_goto_tb(DisasContext *ctx, int n, target_long diff)
       * Under itrigger, instruction executes one by one like singlestep,
       * direct block chain benefits will be small.
       */
+    
+    // CPUState *cpu = ctx->cs;
+    // CPURISCVState *env = cpu_env(cpu);
+
+    TCGv succ_pc = tcg_temp_new();
+    TCGv target_pc = tcg_temp_new(); 
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(succ_pc, ctx, ctx->cur_insn_len);
+    gen_pc_plus_diff(target_pc, ctx, diff);
+
+    gen_pc_plus_diff(pc_now, ctx, 0);
+
+    // gen_helper_hmtt_redirect(tcg_env, 0, 0, 0);
+    gen_helper_hmtt_redirect(tcg_env, pc_now, target_pc, succ_pc);
     if (translator_use_goto_tb(&ctx->base, dest) && !ctx->itrigger) {
         /*
          * For pcrel, the pc must always be up-to-date on entry to

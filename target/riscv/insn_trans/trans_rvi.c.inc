@@ -165,6 +165,14 @@ static bool trans_jalr(DisasContext *ctx, arg_jalr *a)
     gen_set_gpr(ctx, a->rd, succ_pc);
 
 #ifndef CONFIG_USER_ONLY
+    TCGv pc_now = tcg_temp_new();
+    gen_pc_plus_diff(pc_now, ctx, 0);
+
+    gen_helper_hmtt_redirect(tcg_env, pc_now, target_pc, succ_pc);
+
+#endif
+
+#ifndef CONFIG_USER_ONLY
     if (ctx->cfg_ptr->ext_smctr || ctx->cfg_ptr->ext_ssctr) {
         gen_ctr_jalr(ctx, a, target_pc);
     }
@@ -322,6 +330,15 @@ static bool gen_branch(DisasContext *ctx, arg_b *a, TCGCond cond)
             gen_helper_ctr_add_entry(tcg_env, src, dest, type);
         }
 #endif
+        // TCGv succ_pc = tcg_temp_new();
+        // TCGv target_pc = tcg_temp_new(); 
+        // TCGv pc_now = tcg_temp_new();
+        // gen_pc_plus_diff(succ_pc, ctx, ctx->cur_insn_len);
+        // gen_pc_plus_diff(target_pc, ctx, a->imm);
+
+        // gen_pc_plus_diff(pc_now, ctx, 0);
+
+        // gen_helper_hmtt_redirect(tcg_env, pc_now, target_pc, succ_pc);
         gen_goto_tb(ctx, 0, a->imm);
     }
     ctx->pc_save = -1;
